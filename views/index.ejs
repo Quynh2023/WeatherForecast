@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Forcast</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  </head>
+  <body>
+    <!-----------------Input data---------------->
+    <h1>Current Weather Forecast</h1>
+    <p class="today"><%= today %></p>
+
+    <div class="container">
+      <form action="/weather" method="POST">
+        <input type="text" name="city" placeholder="City Name" />
+        <button class="main-button" type="submit">🔍</button>
+      </form>
+    </div>
+
+    <!------------Render data from API------------->
+    <% if (locals.data) { %>
+    <h1><%= data.name %>, <%= data.sys.country %></h1>
+    <h2><%= (data.main.temp - 273.15).toFixed(2) %>°C</h2>
+    <ul class="container1">
+      <li>Feels like: <%= (data.main.feels_like - 273.15).toFixed(2)%>°C</li>
+      <li>Min temp: <%= (data.main.temp_min - 273.15).toFixed(2)%>°C</li>
+      <li>Max temp: <%= (data.main.temp_max - 273.15).toFixed(2)%>°C</li>
+    </ul>
+    <% } %>
+
+    <div class="container1">
+      <% if (locals.data && locals.data.rain && locals.data.rain['1h']) { %>
+      <div class = "rain">
+        <p>It's raining. Bring your umbrella☔☔☔</p>
+      </div>
+      <% } %> 
+      
+      <% if (locals.data && locals.data.snow && locals.data.snow['1h'])
+      { %>
+      <div>
+        <p class = "snow">It's snowing❄️❄️❄️</p>
+      </div>
+      <% } %>
+    </div>
+
+    <% if (locals.error) {%>
+    <div id="tag-error" class="tag-error"><%=error%></div>
+    <% } %>
+
+    <!-----------------Footer---------------------->
+    <footer class="py-4 my-4">
+      <p class="text-center text-body-secondary pt-3 footer">
+        Copyright ©2023 Quynh Nguyen
+      </p>
+    </footer>
+  </body>
+</html>
